@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Patmos-x Curl Download Builder</title>
+
+<style>
+    body { font-family: system-ui, sans-serif; max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+    .selections { display: flex; flex-direction: row; flex-wrap: wrap; gap: 15px; margin-bottom: 1rem; }
+    .selector { display:flex; flex-direction:column; gap: 5px; }
+    pre { background:#dddddd; padding:1rem; border-radius:5px; white-space:pre-wrap; word-break:break-all; }
+    .error { color: #b00020; }
+</style>
+</head>
+
+<body>
+    <h1>Patmos-x Curl Command Builder</h1>
+
+    <h3>Satellite Active Timelines</h3>
+    <img src="images/satelliteTimeline.png" alt="Satellite Timeline" style="width:90%; display:block; margin-left:auto; margin-right:auto;"/>
+    <p style="text-align: center;"><i>Note: The timeline above shows the active periods of the satellites.</i></p>
+
+    <br>
+    <div class="selections">
+        <!-- selection for cloud product -->
+        <div class="selector">
+            <label>Choose a Cloud Product</label>
+            <select name="cloudProd" id="cloudProd">
+                <option value="">All Products</option>
+                <option value="cld_emiss_acha">Cloud Emissivity</option>
+                <option value="cld_opd_dcomp">Cloud Optical Depth</option>
+                <option value="cld_press_acha">Cloud Pressure</option>
+                <option value="cld_reff_dcomp">Cloud Effective Radius</option>
+                <option value="cld_temp_acha">Cloud Temperature</option>
+                <option value="cld_temp_lower_acha">Cloud Temperature (Lower)</option>
+                <option value="cloud_fraction">Cloud Fraction</option>
+                <option value="cloud_probability">Cloud Probability</option>
+                <option value="cloud_type">Cloud Type</option>
+                <option value="datetime">Date/Time</option>
+                <option value="ice_cloud_probability">Ice Cloud Probability</option>
+                <option value="land_class">Land Class</option>
+                <option value="refl_0_65um_nom">Reflectance (0.65 μm)</option>
+                <option value="refl_0_65um_nom_counts">Reflectance (0.65 μm) - Counts</option>
+                <option value="refl_0_86um_nom">Reflectance (0.86 μm)</option>
+                <option value="refl_0_86um_nom_counts">Reflectance (0.86 μm) - Counts</option>
+                <option value="refl_1_60um_nom">Reflectance (1.60 μm)</option>
+                <option value="refl_1_60um_nom_counts">Reflectance (1.60 μm) - Counts</option>
+                <option value="relative_azimuth_angle">Relative Azimuth Angle</option>
+                <option value="scan_line_time">Scan Line Time</option>
+                <option value="scattering_angle">Scattering Angle</option>
+                <option value="sensor_azimuth_angle">Sensor Azimuth Angle</option>
+                <option value="sensor_zenith_angle">Sensor Zenith Angle</option>
+                <option value="snow_class">Snow Class</option>
+                <option value="solar_azimuth_angle">Solar Azimuth Angle</option>
+                <option value="solar_zenith_angle">Solar Zenith Angle</option>
+                <option value="surface_pressure_nwp">Surface Pressure (NWP)</option>
+                <option value="temp_11_0um_nom">Temperature (11.0 μm)</option>
+                <option value="temp_11_0um_nom_clear_sky">Temperature (11.0 μm) - Clear Sky</option>
+                <option value="temp_11_0um_nom_sounder">Temperature (11.0 μm) - Sounder</option>
+                <option value="temp_11_0um_nom_stddev_3x3">Temperature (11.0 μm) - Standard Deviation (3x3)</option>
+                <option value="temp_12_0um_nom">Temperature (12.0 μm)</option>
+                <option value="temp_13_3um_nom">Temperature (13.3 μm)</option>
+                <option value="temp_13_3um_nom_clear_sky">Temperature (13.3 μm) - Clear Sky</option>
+                <option value="temp_3_75um_nom">Temperature (3.75 μm)</option>
+                <option value="temp_3_75um_nom_sounder">Temperature (3.75 μm) - Sounder</option>
+                <option value="water_cloud_probability">Water Cloud Probability</option>
+            </select>
+        </div>
+
+        <!-- selection for satellite -->
+        <div class="selector">
+            <label>Choose a Satellite</label>
+            <select name="satellite" id="satellite">
+                <option value="">--Please choose an option--</option>
+                <option value="METOP-A"> METOP-A</option>
+                <option value="METOP-B"> METOP-B</option>
+                <option value="NOAA-06"> NOAA-06</option>
+                <option value="NOAA-07"> NOAA-07</option>
+                <option value="NOAA-08"> NOAA-08</option>
+                <option value="NOAA-09"> NOAA-09</option>
+                <option value="NOAA-10"> NOAA-10</option>
+                <option value="NOAA-11"> NOAA-11</option>
+                <option value="NOAA-12"> NOAA-12</option>
+                <option value="NOAA-13"> NOAA-13</option>
+                <option value="NOAA-14"> NOAA-14</option>
+                <option value="NOAA-15"> NOAA-15</option>
+                <option value="NOAA-16"> NOAA-16</option>
+                <option value="NOAA-17"> NOAA-17</option>
+                <option value="NOAA-18"> NOAA-18</option>
+                <option value="NOAA-19"> NOAA-19</option>
+            </select>
+        </div>
+
+        <!-- selection for date range -->
+         <div class="selector">
+            <label>Start Date</label>
+            <input type="date" id="startDate" value="1980-01-24" min="1980-01-24">
+         </div>
+         <div class="selector">
+            <label>End Date</label>
+            <input type="date" id="endDate" value="2026-01-01" min="1980-01-24">
+         </div>
+     </div>
+
+     <div style="display:flex; flex-direction:row; gap:10px;">
+        <button onclick="updateCommand()">Generate Command</button>
+
+        <button onclick="copyCommand()">Copy to Clipboard</button>
+    </div>
+
+    <p id="message" class="error"></p>
+    <pre id="commandOutput">Your command will appear here.</pre>
+</body>
+
+<script>
+    const baseURL = "http://tyr.ssec.wisc.edu/patmosx_l2bc/"
+    let command = ""
+
+    function updateCommand() {
+        command = "";
+        let cloudProd = document.getElementById('cloudProd').value;
+        let satellite = document.getElementById('satellite').value;
+        let startDate = document.getElementById('startDate').value;
+        let endDate = document.getElementById('endDate').value;
+        let message = document.getElementById('message');
+        message.textContent = "";
+
+        if (startDate && endDate && startDate > endDate) {
+            message.textContent = "Error: Start date must be on or before end date.";
+            return;
+        }
+
+        if (satellite == "") {
+            message.textContent = "Error: Please select a satellite.";
+            return;
+        }
+        
+
+        command = `curl ${baseURL}index.txt`; // 
+
+        if (cloudProd != "") {
+            command += ` | grep -F ".${cloudProd}.nc"`;
+        }
+
+        command += ` | grep -F "_${satellite}_"`;
+
+        if (startDate || endDate) {
+            const s = (startDate || "00000000").replace(/-/g, ""); // get startDate, replace dashes with ""
+            const e = (endDate || "99999999").replace(/-/g, "");
+            const digits = "[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"; // awk pattern for eight digits
+            command += ` | awk 'match($0, /_d${digits}/) { d = substr($0, RSTART+2, 8); if (d >= "${s}" && d <= "${e}") print }'`
+        }
+
+        command += ` | wget -nc -nH -x --base=${baseURL} -i -`;
+
+        document.getElementById('commandOutput').innerText = command;
+    }
+
+    function copyCommand() {
+        if (!command) updateCommand();
+        if (command) navigator.clipboard.writeText(command);
+    }
+</script>
+</html>
