@@ -30,6 +30,11 @@
     #cloudProd-list::-webkit-scrollbar-thumb:hover {
         background: #a2abb8;
     }
+
+    #copyBtn.copied {
+        background-color: #2e7d32;
+        color: white;
+    }
 </style>
 </head>
 
@@ -194,7 +199,7 @@
      <div style="display:flex; flex-direction:row; gap:10px;">
         <button onclick="updateCommand()">Generate Command</button>
 
-        <button onclick="copyCommand()">Copy to Clipboard</button>
+        <button id="copyBtn" onclick="copyCommand()">Copy to Clipboard</button>
     </div>
 
     <p id="message" class="error"></p>
@@ -251,9 +256,27 @@
         document.getElementById('commandOutput').innerText = command;
     }
 
-    function copyCommand() {
+    let copyTimeout;
+
+    async function copyCommand() {
         if (!command) updateCommand();
-        if (command) navigator.clipboard.writeText(command);
+        if (!command) return; // If still no command, do nothing
+
+        const copyBtn = document.getElementById('copyBtn');
+        clearTimeout(copyTimeout); // handles rapid repeated clicks
+
+        try {
+            await navigator.clipboard.writeText(command);
+            copyBtn.textContent = "Copied!";
+            copyBtn.classList.add('copied');
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
+
+        copyTimeout = setTimeout(() => {
+            copyBtn.textContent = "Copy to Clipboard";
+            copyBtn.classList.remove('copied');
+        }, 1500);
     }
 </script>
 </html>
