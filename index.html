@@ -6,26 +6,94 @@
 
 <style>
     body { font-family: system-ui, sans-serif; max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
-    .selections { display: flex; flex-direction: row; flex-wrap: wrap; gap: 15px; margin-bottom: 1rem; }
+    .selections { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items:center; gap: 20px; margin-bottom: 2rem; }
     .selector { display:flex; flex-direction:column; gap: 5px; }
     pre { background:#dddddd; padding:1rem; border-radius:5px; white-space:pre-wrap; word-break:break-all; }
     .error { color: #b00020; }
+
+    .multisel-row { 
+        display:flex; cursor:pointer; border-bottom: 1px solid #f0f0f0; 
+        padding: 5px 5px; gap:13px;
+    }
+    .multisel-row:last-child { border-bottom: none; }
+
+    #cloudProd-list::-webkit-scrollbar {
+        width: 9px;
+    }
+    #cloudProd-list::-webkit-scrollbar-track {
+        background: #f4f4f4;
+    }
+    #cloudProd-list::-webkit-scrollbar-thumb {
+        background: #b7c2d1;
+        border-radius: 5px;
+    }
+    #cloudProd-list::-webkit-scrollbar-thumb:hover {
+        background: #a2abb8;
+    }
 </style>
 </head>
 
 <body>
     <h1>Patmos-x Curl Command Builder</h1>
 
-    <h3>Satellite Active Timelines</h3>
-    <img src="images/satelliteTimeline.png" alt="Satellite Timeline" style="width:90%; display:block; margin-left:auto; margin-right:auto;"/>
-    <p style="text-align: center;"><i>Note: The timeline above shows the active periods of the satellites.</i></p>
+
+
+    <div style="max-width: 100%; margin: 0 auto;">
+        <!-- This inner wrapper matches the 80% width and centers everything together -->
+        <div style="width: 80%; margin: 0 auto;">
+            <h3 style="margin-bottom: 0px; text-align: left;">Satellite Active Timelines</h3>
+            <img src="images/satelliteTimeline.png" alt="Satellite Timeline" style="width: 100%; display: block;"/>
+            <p style="text-align: center;"><i>Note: The timeline above shows the active periods of the satellites.</i></p>
+        </div>
+    </div>
 
     <br>
     <div class="selections">
         <!-- selection for cloud product -->
         <div class="selector">
-            <label>Choose a Cloud Product</label>
-            <select name="cloudProd" id="cloudProd">
+            <label>Choose Cloud Product(s)</label>
+
+            <div id="cloudProd-list" style="max-height:180px; overflow-y:auto; border:1px solid #464646; border-radius:5px;">
+                <label class="multisel-row"><input type="checkbox" value="cld_emiss_acha">Cloud Emissivity</label>
+                <label class="multisel-row"><input type="checkbox" value="cld_opd_dcomp">Cloud Optical Depth</label>
+                <label class="multisel-row"><input type="checkbox" value="cld_press_acha">Cloud Pressure</label>
+                <label class="multisel-row"><input type="checkbox" value="cld_reff_dcomp">Cloud Effective Radius</label>
+                <label class="multisel-row"><input type="checkbox" value="cld_temp_acha">Cloud Temperature</label>
+                <label class="multisel-row"><input type="checkbox" value="cld_temp_lower_acha">Cloud Temperature (Lower)</label>
+                <label class="multisel-row"><input type="checkbox" value="cloud_fraction">Cloud Fraction</label>
+                <label class="multisel-row"><input type="checkbox" value="cloud_probability">Cloud Probability</label>
+                <label class="multisel-row"><input type="checkbox" value="cloud_type">Cloud Type</label>
+                <label class="multisel-row"><input type="checkbox" value="datetime">Date/Time</label>
+                <label class="multisel-row"><input type="checkbox" value="ice_cloud_probability">Ice Cloud Probability</label>
+                <label class="multisel-row"><input type="checkbox" value="land_class">Land Class</label>
+                <label class="multisel-row"><input type="checkbox" value="refl_0_65um_nom">Reflectance (0.65 μm)</label>
+                <label class="multisel-row"><input type="checkbox" value="refl_0_65um_nom_counts">Reflectance (0.65 μm) - Counts</label>
+                <label class="multisel-row"><input type="checkbox" value="refl_0_86um_nom">Reflectance (0.86 μm)</label>
+                <label class="multisel-row"><input type="checkbox" value="refl_0_86um_nom_counts">Reflectance (0.86 μm) - Counts</label>
+                <label class="multisel-row"><input type="checkbox" value="refl_1_60um_nom">Reflectance (1.60 μm)</label>
+                <label class="multisel-row"><input type="checkbox" value="refl_1_60um_nom_counts">Reflectance (1.60 μm) - Counts</label>
+                <label class="multisel-row"><input type="checkbox" value="relative_azimuth_angle">Relative Azimuth Angle</label>
+                <label class="multisel-row"><input type="checkbox" value="scan_line_time">Scan Line Time</label>
+                <label class="multisel-row"><input type="checkbox" value="scattering_angle">Scattering Angle</label>
+                <label class="multisel-row"><input type="checkbox" value="sensor_azimuth_angle">Sensor Azimuth Angle</label>
+                <label class="multisel-row"><input type="checkbox" value="sensor_zenith_angle">Sensor Zenith Angle</label>
+                <label class="multisel-row"><input type="checkbox" value="snow_class">Snow Class</label>
+                <label class="multisel-row"><input type="checkbox" value="solar_azimuth_angle">Solar Azimuth Angle</label>
+                <label class="multisel-row"><input type="checkbox" value="solar_zenith_angle">Solar Zenith Angle</label>
+                <label class="multisel-row"><input type="checkbox" value="surface_pressure_nwp">Surface Pressure (NWP)</label>
+                <label class="multisel-row"><input type="checkbox" value="temp_11_0um_nom">Temperature (11.0 μm)</label>
+                <label class="multisel-row"><input type="checkbox" value="temp_11_0um_nom_clear_sky">Temperature (11.0 μm) - Clear Sky</label>
+                <label class="multisel-row"><input type="checkbox" value="temp_11_0um_nom_sounder">Temperature (11.0 μm) - Sounder</label>
+                <label class="multisel-row"><input type="checkbox" value="temp_11_0um_nom_stddev_3x3">Temperature (11.0 μm) - Standard Deviation (3x3)</label>
+                <label class="multisel-row"><input type="checkbox" value="temp_12_0um_nom">Temperature (12.0 μm)</label>
+                <label class="multisel-row"><input type="checkbox" value="temp_13_3um_nom">Temperature (13.3 μm)</label>
+                <label class="multisel-row"><input type="checkbox" value="temp_13_3um_nom_clear_sky">Temperature (13.3 μm) - Clear Sky</label>
+                <label class="multisel-row"><input type="checkbox" value="temp_3_75um_nom">Temperature (3.75 μm)</label>
+                <label class="multisel-row"><input type="checkbox" value="temp_3_75um_nom_sounder">Temperature (3.75 μm) - Sounder</label>
+                <label class="multisel-row"><input type="checkbox" value="water_cloud_probability">Water Cloud Probability</label>
+            </div>
+
+            <!-- <select name="cloudProd" id="cloudProd">
                 <option value="">All Products</option>
                 <option value="cld_emiss_acha">Cloud Emissivity</option>
                 <option value="cld_opd_dcomp">Cloud Optical Depth</option>
@@ -64,13 +132,32 @@
                 <option value="temp_3_75um_nom">Temperature (3.75 μm)</option>
                 <option value="temp_3_75um_nom_sounder">Temperature (3.75 μm) - Sounder</option>
                 <option value="water_cloud_probability">Water Cloud Probability</option>
-            </select>
+            </select> -->
         </div>
 
         <!-- selection for satellite -->
         <div class="selector">
-            <label>Choose a Satellite</label>
-            <select name="satellite" id="satellite">
+            <label>Choose Satellite(s)</label>
+            <div id="satellite-list" style="max-height:180px; overflow-y:auto; border:1px solid #464646; border-radius:5px;">
+                <label class="multisel-row"><input type="checkbox" value="METOP-A">Metop-A</label>
+                <label class="multisel-row"><input type="checkbox" value="METOP-B">Metop-B</label>
+                <label class="multisel-row"><input type="checkbox" value="NOAA-06">NOAA-06</label>
+                <label class="multisel-row"><input type="checkbox" value="NOAA-07">NOAA-07</label>
+                <label class="multisel-row"><input type="checkbox" value="NOAA-08">NOAA-08</label>
+                <label class="multisel-row"><input type="checkbox" value="NOAA-09">NOAA-09</label>
+                <label class="multisel-row"><input type="checkbox" value="NOAA-10">NOAA-10</label>
+                <label class="multisel-row"><input type="checkbox" value="NOAA-11">NOAA-11</label>
+                <label class="multisel-row"><input type="checkbox" value="NOAA-12">NOAA-12</label>
+                <label class="multisel-row"><input type="checkbox" value="NOAA-13">NOAA-13</label>
+                <label class="multisel-row"><input type="checkbox" value="NOAA-14">NOAA-14</label>
+                <label class="multisel-row"><input type="checkbox" value="NOAA-15">NOAA-15</label>
+                <label class="multisel-row"><input type="checkbox" value="NOAA-16">NOAA-16</label>
+                <label class="multisel-row"><input type="checkbox" value="NOAA-17">NOAA-17</label>
+                <label class="multisel-row"><input type="checkbox" value="NOAA-18">NOAA-18</label>
+                <label class="multisel-row"><input type="checkbox" value="NOAA-19">NOAA-19</label>
+            </div>
+
+            <!-- <select name="satellite" id="satellite">
                 <option value="">--Please choose an option--</option>
                 <option value="METOP-A"> METOP-A</option>
                 <option value="METOP-B"> METOP-B</option>
@@ -88,17 +175,19 @@
                 <option value="NOAA-17"> NOAA-17</option>
                 <option value="NOAA-18"> NOAA-18</option>
                 <option value="NOAA-19"> NOAA-19</option>
-            </select>
+            </select> -->
         </div>
 
         <!-- selection for date range -->
-         <div class="selector">
-            <label>Start Date</label>
-            <input type="date" id="startDate" value="1980-01-24" min="1980-01-24">
-         </div>
-         <div class="selector">
-            <label>End Date</label>
-            <input type="date" id="endDate" value="2026-01-01" min="1980-01-24">
+         <div style="display:flex; flex-direction:column; gap:10px;">
+            <div class="selector">
+                <label>Start Date</label>
+                <input type="date" id="startDate" value="1980-01-24" min="1980-01-24">
+            </div>
+            <div class="selector">
+                <label>End Date</label>
+                <input type="date" id="endDate" value="2026-01-01" min="1980-01-24">
+            </div>
          </div>
      </div>
 
@@ -116,10 +205,14 @@
     const baseURL = "http://tyr.ssec.wisc.edu/patmosx_l2bc/"
     let command = ""
 
+    function getChecked(listID) {
+        return [...document.querySelectorAll(`#${listID} input:checked`)].map(cb => cb.value);
+    }
+
     function updateCommand() {
         command = "";
-        let cloudProd = document.getElementById('cloudProd').value;
-        let satellite = document.getElementById('satellite').value;
+        let products = getChecked('cloudProd-list');
+        let satellites = getChecked('satellite-list');
         let startDate = document.getElementById('startDate').value;
         let endDate = document.getElementById('endDate').value;
         let message = document.getElementById('message');
@@ -130,19 +223,21 @@
             return;
         }
 
-        if (satellite == "") {
-            message.textContent = "Error: Please select a satellite.";
+        if (!products.length) {
+            message.textContent = "Error: Please select at least one product.";
+            return;
+        }
+
+        if (!satellites.length) {
+            message.textContent = "Error: Please select at least one satellite.";
             return;
         }
         
 
         command = `curl ${baseURL}index.txt`; // 
 
-        if (cloudProd != "") {
-            command += ` | grep -F ".${cloudProd}.nc"`;
-        }
-
-        command += ` | grep -F "_${satellite}_"`;
+        command += ` | grep -E '\\.(${products.join('|')})\\.nc'`;
+        command += ` | grep -E '_(${satellites.join('|')})_'`;
 
         if (startDate || endDate) {
             const s = (startDate || "00000000").replace(/-/g, ""); // get startDate, replace dashes with ""
