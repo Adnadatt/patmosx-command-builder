@@ -5,36 +5,78 @@
 <title>Patmos-x Curl Download Builder</title>
 
 <style>
-    body { font-family: system-ui, sans-serif; max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
-    .selections { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items:center; gap: 20px; margin-bottom: 2rem; }
-    .selector { display:flex; flex-direction:column; gap: 5px; }
-    pre { background:#dddddd; padding:1rem; border-radius:5px; white-space:pre-wrap; word-break:break-all; }
-    .error { color: #b00020; }
+    :root {
+        --font-size:16px;
+        --font-size-small:14px;
+        --border: 1px solid #464646;
+        --radius: 5px;
+        --control-height: 34px;
+    }
+
+    body { font-family: system-ui, sans-serif; font-size:var(--font-size); max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
+    button, input, select { font:inherit; }
+
+    .selections { display: flex; flex-direction: row; flex-wrap: wrap; justify-content:center; align-items:center; gap: 20px; margin-bottom: 2rem; }
+    .selector { display:flex; flex-direction:column; gap: 5px; width:300px; }
+    .date-col { display:flex; flex-direction:column; gap: 10px; width:200px }
+    .date-col .selector { width:100%; }
+    .btn-row { display:flex; flex-direction:row; gap:15px; margin-bottom:1rem;}
+    
+    .selectClearAll { background:none; border:none; cursor:pointer; color: #003063; font-size:var(--font-size-small); padding:4px 6px; }
+    .selectClearAll:hover { text-decoration: underline; }
 
     .multisel-row { 
         display:flex; cursor:pointer; border-bottom: 1px solid #f0f0f0; 
-        padding: 5px 5px; gap:13px;
+        padding: 5px 5px; gap:13px; align-items:center; font-size:var(--font-size);
     }
     .multisel-row:last-child { border-bottom: none; }
 
-    #cloudProd-list::-webkit-scrollbar {
+    .checklist {
+        height:180px; overflow-y:auto; border:var(--border); border-radius:var(--radius);
+    }
+    .checklist::-webkit-scrollbar {
         width: 9px;
     }
-    #cloudProd-list::-webkit-scrollbar-track {
+    .checklist::-webkit-scrollbar-track {
         background: #f4f4f4;
     }
-    #cloudProd-list::-webkit-scrollbar-thumb {
-        background: #b7c2d1;
-        border-radius: 5px;
+    .checklist::-webkit-scrollbar-thumb {
+        background: #dddddd;
+        border-radius:var(--radius);
     }
-    #cloudProd-list::-webkit-scrollbar-thumb:hover {
-        background: #a2abb8;
+    .checklist::-webkit-scrollbar-thumb:hover {
+        background: #cccccc;
     }
+
+    input[type="date"] {
+        height: var(--control-height);
+        width: 100%;
+        padding: 0 8px;
+        box-sizing: border-box;
+        border: var(--border);
+        border-radius: var(--radius);
+        font-size: var(--font-size);
+    }
+
+    .btn {
+        height: 30px;
+        font-size: var(--font-size-small);
+        padding: 0 12px;
+        border: 1px solid #b0b0b0;
+        border-radius: var(--radius);
+        background: #f4f4f4;
+        cursor: pointer;
+    }
+    .btn:hover { background: #e8e8e8; }
 
     #copyBtn.copied {
         background-color: #2e7d32;
         color: white;
     }
+
+    pre { font-size:var(--font-size-small); background:#dddddd; padding:1rem; border-radius:5px; white-space:pre-wrap; word-break:break-all; }
+    .error { color: #b00020; }
+
 </style>
 </head>
 
@@ -58,7 +100,7 @@
         <div class="selector">
             <label>Choose Cloud Product(s)</label>
 
-            <div id="cloudProd-list" style="max-height:180px; overflow-y:auto; border:1px solid #464646; border-radius:5px;">
+            <div class="checklist" id="cloudProd-list">
                 <label class="multisel-row"><input type="checkbox" value="cld_emiss_acha">Cloud Emissivity</label>
                 <label class="multisel-row"><input type="checkbox" value="cld_opd_dcomp">Cloud Optical Depth</label>
                 <label class="multisel-row"><input type="checkbox" value="cld_press_acha">Cloud Pressure</label>
@@ -98,52 +140,16 @@
                 <label class="multisel-row"><input type="checkbox" value="water_cloud_probability">Water Cloud Probability</label>
             </div>
 
-            <!-- <select name="cloudProd" id="cloudProd">
-                <option value="">All Products</option>
-                <option value="cld_emiss_acha">Cloud Emissivity</option>
-                <option value="cld_opd_dcomp">Cloud Optical Depth</option>
-                <option value="cld_press_acha">Cloud Pressure</option>
-                <option value="cld_reff_dcomp">Cloud Effective Radius</option>
-                <option value="cld_temp_acha">Cloud Temperature</option>
-                <option value="cld_temp_lower_acha">Cloud Temperature (Lower)</option>
-                <option value="cloud_fraction">Cloud Fraction</option>
-                <option value="cloud_probability">Cloud Probability</option>
-                <option value="cloud_type">Cloud Type</option>
-                <option value="datetime">Date/Time</option>
-                <option value="ice_cloud_probability">Ice Cloud Probability</option>
-                <option value="land_class">Land Class</option>
-                <option value="refl_0_65um_nom">Reflectance (0.65 μm)</option>
-                <option value="refl_0_65um_nom_counts">Reflectance (0.65 μm) - Counts</option>
-                <option value="refl_0_86um_nom">Reflectance (0.86 μm)</option>
-                <option value="refl_0_86um_nom_counts">Reflectance (0.86 μm) - Counts</option>
-                <option value="refl_1_60um_nom">Reflectance (1.60 μm)</option>
-                <option value="refl_1_60um_nom_counts">Reflectance (1.60 μm) - Counts</option>
-                <option value="relative_azimuth_angle">Relative Azimuth Angle</option>
-                <option value="scan_line_time">Scan Line Time</option>
-                <option value="scattering_angle">Scattering Angle</option>
-                <option value="sensor_azimuth_angle">Sensor Azimuth Angle</option>
-                <option value="sensor_zenith_angle">Sensor Zenith Angle</option>
-                <option value="snow_class">Snow Class</option>
-                <option value="solar_azimuth_angle">Solar Azimuth Angle</option>
-                <option value="solar_zenith_angle">Solar Zenith Angle</option>
-                <option value="surface_pressure_nwp">Surface Pressure (NWP)</option>
-                <option value="temp_11_0um_nom">Temperature (11.0 μm)</option>
-                <option value="temp_11_0um_nom_clear_sky">Temperature (11.0 μm) - Clear Sky</option>
-                <option value="temp_11_0um_nom_sounder">Temperature (11.0 μm) - Sounder</option>
-                <option value="temp_11_0um_nom_stddev_3x3">Temperature (11.0 μm) - Standard Deviation (3x3)</option>
-                <option value="temp_12_0um_nom">Temperature (12.0 μm)</option>
-                <option value="temp_13_3um_nom">Temperature (13.3 μm)</option>
-                <option value="temp_13_3um_nom_clear_sky">Temperature (13.3 μm) - Clear Sky</option>
-                <option value="temp_3_75um_nom">Temperature (3.75 μm)</option>
-                <option value="temp_3_75um_nom_sounder">Temperature (3.75 μm) - Sounder</option>
-                <option value="water_cloud_probability">Water Cloud Probability</option>
-            </select> -->
+            <div>
+                <button class="selectClearAll" onclick="selectAll('cloudProd-list')">Select All</button>
+                <button class="selectClearAll" onclick="clearAll('cloudProd-list')">Clear All</button>
+            </div>
         </div>
 
         <!-- selection for satellite -->
         <div class="selector">
             <label>Choose Satellite(s)</label>
-            <div id="satellite-list" style="max-height:180px; overflow-y:auto; border:1px solid #464646; border-radius:5px;">
+            <div class="checklist" id="satellite-list">
                 <label class="multisel-row"><input type="checkbox" value="METOP-A">Metop-A</label>
                 <label class="multisel-row"><input type="checkbox" value="METOP-B">Metop-B</label>
                 <label class="multisel-row"><input type="checkbox" value="NOAA-06">NOAA-06</label>
@@ -162,29 +168,14 @@
                 <label class="multisel-row"><input type="checkbox" value="NOAA-19">NOAA-19</label>
             </div>
 
-            <!-- <select name="satellite" id="satellite">
-                <option value="">--Please choose an option--</option>
-                <option value="METOP-A"> METOP-A</option>
-                <option value="METOP-B"> METOP-B</option>
-                <option value="NOAA-06"> NOAA-06</option>
-                <option value="NOAA-07"> NOAA-07</option>
-                <option value="NOAA-08"> NOAA-08</option>
-                <option value="NOAA-09"> NOAA-09</option>
-                <option value="NOAA-10"> NOAA-10</option>
-                <option value="NOAA-11"> NOAA-11</option>
-                <option value="NOAA-12"> NOAA-12</option>
-                <option value="NOAA-13"> NOAA-13</option>
-                <option value="NOAA-14"> NOAA-14</option>
-                <option value="NOAA-15"> NOAA-15</option>
-                <option value="NOAA-16"> NOAA-16</option>
-                <option value="NOAA-17"> NOAA-17</option>
-                <option value="NOAA-18"> NOAA-18</option>
-                <option value="NOAA-19"> NOAA-19</option>
-            </select> -->
+            <div>
+                <button class="selectClearAll" onclick="selectAll('satellite-list')">Select All</button>
+                <button class="selectClearAll" onclick="clearAll('satellite-list')">Clear All</button>
+            </div>
         </div>
 
         <!-- selection for date range -->
-         <div style="display:flex; flex-direction:column; gap:10px;">
+         <div class="date-col">
             <div class="selector">
                 <label>Start Date</label>
                 <input type="date" id="startDate" value="1980-01-24" min="1980-01-24">
@@ -196,19 +187,27 @@
          </div>
      </div>
 
-     <div style="display:flex; flex-direction:row; gap:10px;">
-        <button onclick="updateCommand()">Generate Command</button>
+     <div class="btn-row">
+        <button class="btn" onclick="updateCommand()">Generate Command</button>
 
-        <button id="copyBtn" onclick="copyCommand()">Copy to Clipboard</button>
+        <button class="btn" id="copyBtn" onclick="copyCommand()">Copy to Clipboard</button>
     </div>
 
     <p id="message" class="error"></p>
     <pre id="commandOutput">Your command will appear here.</pre>
-</body>
+
 
 <script>
     const baseURL = "http://tyr.ssec.wisc.edu/patmosx_l2bc/"
     let command = ""
+
+    function selectAll(listID) {
+        document.querySelectorAll(`#${listID} input`).forEach(cb => cb.checked = true);
+    }
+
+    function clearAll(listID) {
+        document.querySelectorAll(`#${listID} input`).forEach(cb => cb.checked = false);
+    }
 
     function getChecked(listID) {
         return [...document.querySelectorAll(`#${listID} input:checked`)].map(cb => cb.value);
@@ -259,7 +258,7 @@
     let copyTimeout;
 
     async function copyCommand() {
-        if (!command) updateCommand();
+        updateCommand();
         if (!command) return; // If still no command, do nothing
 
         const copyBtn = document.getElementById('copyBtn');
@@ -271,6 +270,7 @@
             copyBtn.classList.add('copied');
         } catch (err) {
             console.error('Failed to copy: ', err);
+            copyBtn.textContent = "Copy Failed";
         }
 
         copyTimeout = setTimeout(() => {
@@ -279,4 +279,5 @@
         }, 1500);
     }
 </script>
+</body>
 </html>
